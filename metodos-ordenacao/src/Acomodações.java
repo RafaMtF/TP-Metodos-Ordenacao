@@ -14,9 +14,9 @@ public class Acomodações {
     private double bedrooms;
     private double price;
 
-    public Acomodações(int roomId, int hostId, int reviews, int accommodates, String roomType, String country,
-            String city, String neighbourhood, String propertyType, double overallSatisfaction, double bedrooms,
-            double price) {
+    public Acomodações(int roomId, int hostId, String roomType, String country, String city, String neighbourhood,
+            int reviews, double overallSatisfaction, int accommodates,
+            double bedrooms, double price, String propertyType) {
         this.roomId = roomId;
         this.hostId = hostId;
         this.reviews = reviews;
@@ -61,8 +61,9 @@ public class Acomodações {
     }
 
     public Acomodações clone() {
-        return new Acomodações(roomId, hostId, reviews, accommodates, roomType, country, city, neighbourhood,
-                propertyType, overallSatisfaction, bedrooms, price);
+        return new Acomodações(this.roomId, this.hostId, this.roomType, this.country, this.city, this.neighbourhood,
+                this.reviews, this.overallSatisfaction, this.accommodates, this.bedrooms, this.price,
+                this.propertyType);
     }
 
     public int getRoomId() {
