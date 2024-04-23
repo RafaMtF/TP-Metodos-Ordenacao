@@ -31,6 +31,7 @@ public class Acomodações {
         this.price = price;
     }
 
+
     // Segundo construtor??
 
     public void ler() {

@@ -1,29 +1,34 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 class Leitor {
 
-    public static ArrayList lerArquivo() throws FileNotFoundException {
+    public static ArrayList<Acomodações> lerArquivo() {
         File arq = new File("metodos-ordenacao/src/tmp/dados_airbnb.txt");
 
-        Scanner reader = new Scanner(arq);
+        try {
+            Scanner reader = new Scanner(arq);
 
-        ArrayList<Acomodações> acList = new ArrayList<>();
+            ArrayList<Acomodações> acList = new ArrayList<>();
 
-        reader.nextLine();
+            reader.nextLine();
 
-        while (reader.hasNextLine()) {
-            String data = reader.nextLine();
-            Acomodações ac = quebrarLinha(data);
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                Acomodações ac = quebrarLinha(data);
 
-            acList.add(ac);
+                acList.add(ac);
+            }
+
+            reader.close();
+            return acList;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ArrayList<>();
         }
 
-        reader.close();
-
-        return acList;
     }
 
     private static Acomodações quebrarLinha(String s) {
@@ -33,7 +38,7 @@ class Leitor {
                 Integer.valueOf(sp[6]), Double.valueOf(sp[7]), Integer.valueOf(sp[8]), Double.valueOf(sp[9]),
                 Double.valueOf(sp[10]), sp[11]);
 
-        //ac.imprimir();
+        // ac.imprimir();
 
         return ac;
     }
