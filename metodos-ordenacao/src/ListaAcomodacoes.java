@@ -1,33 +1,40 @@
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListaAcomodacoes {
 
-    private static ArrayList<Acomodações> arrayArquivo = Leitor.lerArquivo();
-    private ArrayList<Acomodações> array;
+    private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
+    private static List<Acomodacoes> arrayAOrdenar = new ArrayList<Acomodacoes>() {
+    };
 
-    public void inserirPorRoomId(int id){
-        for (Acomodações acomodacao : arrayArquivo) {
+    public static void inserirPorRoomId(int id){
+        for (Acomodacoes acomodacao : arrayArquivo) {
             if(acomodacao.getRoomId()==id){
-                this.array.add(acomodacao);
+                arrayAOrdenar.add(acomodacao);
                 break;
             }   
         }
     }
 
-    public static ArrayList<Acomodações> getArrayArquivo() {
+    public static List<Acomodacoes> getArrayArquivo() {
         return arrayArquivo;
     }
 
-    public static void setArrayArquivo(ArrayList<Acomodações> arrayArquivo) {
+    public static void setArrayArquivo(List<Acomodacoes> arrayArquivo) {
         ListaAcomodacoes.arrayArquivo = arrayArquivo;
     }
 
-    public ArrayList<Acomodações> getArray() {
-        return array;
+    public static List<Acomodacoes> getArrayAOrdenar() {
+        return arrayAOrdenar;
     }
 
-    public void setArray(ArrayList<Acomodações> array) {
-        this.array = array;
+    public static void setArrayAOrdenar(List<Acomodacoes> arrayIn) {
+        arrayAOrdenar = arrayIn;
+    }
+
+    public void addToArrayAOrdenar(Acomodacoes acomodacao){
+        arrayAOrdenar.add(acomodacao);
     }
 }
 

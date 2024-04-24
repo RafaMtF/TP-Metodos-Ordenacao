@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Acomodações {
+public class Acomodacoes {
     private int roomId;
     private int hostId;
     private int reviews;
@@ -14,7 +14,7 @@ public class Acomodações {
     private double bedrooms;
     private double price;
 
-    public Acomodações(int roomId, int hostId, String roomType, String country, String city, String neighbourhood,
+    public Acomodacoes(int roomId, int hostId, String roomType, String country, String city, String neighbourhood,
             int reviews, double overallSatisfaction, int accommodates,
             double bedrooms, double price, String propertyType) {
         this.roomId = roomId;
@@ -61,8 +61,8 @@ public class Acomodações {
                 + " ## " + bedrooms + " ## " + price + " ## " + propertyType + "]");
     }
 
-    public Acomodações clone() {
-        return new Acomodações(this.roomId, this.hostId, this.roomType, this.country, this.city, this.neighbourhood,
+    public Acomodacoes clone() {
+        return new Acomodacoes(this.roomId, this.hostId, this.roomType, this.country, this.city, this.neighbourhood,
                 this.reviews, this.overallSatisfaction, this.accommodates, this.bedrooms, this.price,
                 this.propertyType);
     }
