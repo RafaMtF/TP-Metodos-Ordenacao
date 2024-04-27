@@ -8,14 +8,38 @@ public class ListaAcomodacoes {
     private static List<Acomodacoes> arrayAOrdenar = new ArrayList<Acomodacoes>() {
     };
 
-    public static void inserirPorRoomId(int id){
+    public static List<Acomodacoes> inserirPorRoomId(int id, List<Acomodacoes> ac) {
         for (Acomodacoes acomodacao : arrayArquivo) {
-            if(acomodacao.getRoomId()==id){
-                arrayAOrdenar.add(acomodacao);
-                break;
-            }   
+            if (acomodacao.getRoomId() == id) {
+                ac.add(acomodacao);
+                return ac;
+            }
         }
+        return ac;
     }
+
+    public static List<Acomodacoes> inserirPorHostId(int id, List<Acomodacoes> ac) {
+        for (Acomodacoes acomodacao : arrayArquivo) {
+            if (acomodacao.getHostId() == id) {
+                ac.add(acomodacao);
+                return ac;
+            }
+        }
+        return ac;
+    }
+
+    public static List<Acomodacoes> inserirPorHostIdERoomId(int Hostid,int Roomid, List<Acomodacoes> ac) {
+        for (Acomodacoes acomodacao : arrayArquivo) {
+            if (acomodacao.getHostId() == Hostid&&acomodacao.getRoomId()==Roomid) {
+                ac.add(acomodacao);
+                return ac;
+            }
+        }
+        return ac;
+    }
+
+
+    
 
     public static List<Acomodacoes> getArrayArquivo() {
         return arrayArquivo;
@@ -33,8 +57,7 @@ public class ListaAcomodacoes {
         arrayAOrdenar = arrayIn;
     }
 
-    public void addToArrayAOrdenar(Acomodacoes acomodacao){
+    public void addToArrayAOrdenar(Acomodacoes acomodacao) {
         arrayAOrdenar.add(acomodacao);
     }
 }
-

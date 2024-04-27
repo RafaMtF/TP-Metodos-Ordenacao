@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,10 +9,12 @@ public class App {
 
         String size = scan.nextLine();
 
+        List<Acomodacoes> ac2 = new ArrayList<>();
+
 
         for(int i = 0; i<Integer.valueOf(size);i++){
             String s = scan.nextLine();
-            ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s));
+            ac2 = ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s), ac2);
             if (s.equals("FIM") || s.isEmpty()) {
                 break;
             }
@@ -19,10 +22,11 @@ public class App {
 
         scan.close();
    
-        List<Acomodacoes> ac2 = Ordenador.bolha(ListaAcomodacoes.getArrayAOrdenar());
+        ac2 = Ordenador.merge(ac2);
 
         for (Acomodacoes acomocadao : ac2) {
                 acomocadao.imprimir();
+                //System.out.println(acomocadao.getOverallSatisfaction());
         }
     }
 }
