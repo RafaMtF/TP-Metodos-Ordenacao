@@ -3,6 +3,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Merge {
 
@@ -22,6 +24,7 @@ public class Merge {
                         Acomodacoes temp = ac2[j];
                         ac2[j] = ac2[j + 1];
                         ac2[j + 1] = temp;
+
                     } else if (ac2[j].getOverallSatisfaction() == ac2[j + 1].getOverallSatisfaction()) {
 
                         if (ac2[j].getRoomId() > ac2[j + 1].getRoomId()) {
@@ -39,31 +42,36 @@ public class Merge {
 
         public static List<Acomodacoes> merge(List<Acomodacoes> ac) {
 
-            Acomodacoes[] ac2 = ac.toArray(new Acomodacoes[ac.size()]);
-
             int[] acHostId = {};
-            int[] acRoomId = {};
 
-            for (Acomodacoes acomodacao : ac2) {
+            for (Acomodacoes acomodacao : ac) {
                 acHostId = addElement(acHostId, acomodacao.getHostId());
-                acRoomId = addElement(acRoomId, acomodacao.getRoomId());
             }
 
             mergesort(acHostId, 0, acHostId.length - 1);
 
-            List<Acomodacoes> ac3 = new ArrayList<>();
+            List<Acomodacoes> ac2 = new ArrayList<>();
 
             for (int i = 0; i < acHostId.length; i++) {
 
-                ac3 = ListaAcomodacoes.inserirPorHostId(acHostId[i], ac3);
+                List<Integer> roomIds = ListaAcomodacoes.getHostIdMap().get(acHostId[i]);
 
+                int[] acRoomId = {};
+
+                for (int id : roomIds) {
+                    acRoomId = addElement(acRoomId, id);
+                }
+
+                mergesort(acRoomId, 0, acRoomId.length - 1); //Do menor pro maior ou contrario?
+                
+                ac2 = ListaAcomodacoes.inserirPorRoomId(acRoomId[i], ac2);
             }
 
-            return ac3;
+            return ac2;
 
         }
 
-        static int[] addElement(int[] a, int e) {
+        private static int[] addElement(int[] a, int e) {
             a = Arrays.copyOf(a, a.length + 1);
             a[a.length - 1] = e;
             return a;
@@ -285,32 +293,11 @@ public class Merge {
     public class ListaAcomodacoes {
 
         private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
-        private static List<Acomodacoes> arrayAOrdenar = new ArrayList<Acomodacoes>() {
-        };
+        private static Map<Integer, List<Integer>> hostIdMap = new HashMap();
 
         public static List<Acomodacoes> inserirPorRoomId(int id, List<Acomodacoes> ac) {
             for (Acomodacoes acomodacao : arrayArquivo) {
                 if (acomodacao.getRoomId() == id) {
-                    ac.add(acomodacao);
-                    return ac;
-                }
-            }
-            return ac;
-        }
-
-        public static List<Acomodacoes> inserirPorHostId(int id, List<Acomodacoes> ac) {
-            for (Acomodacoes acomodacao : arrayArquivo) {
-                if (acomodacao.getHostId() == id) {
-                    ac.add(acomodacao);
-                    return ac;
-                }
-            }
-            return ac;
-        }
-
-        public static List<Acomodacoes> inserirPorHostIdERoomId(int Hostid, int Roomid, List<Acomodacoes> ac) {
-            for (Acomodacoes acomodacao : arrayArquivo) {
-                if (acomodacao.getHostId() == Hostid && acomodacao.getRoomId() == Roomid) {
                     ac.add(acomodacao);
                     return ac;
                 }
@@ -326,17 +313,14 @@ public class Merge {
             ListaAcomodacoes.arrayArquivo = arrayArquivo;
         }
 
-        public static List<Acomodacoes> getArrayAOrdenar() {
-            return arrayAOrdenar;
+        public static Map<Integer, List<Integer>> getHostIdMap() {
+            return hostIdMap;
         }
 
-        public static void setArrayAOrdenar(List<Acomodacoes> arrayIn) {
-            arrayAOrdenar = arrayIn;
+        public static void setHostIdMap(Map<Integer, List<Integer>> hostIdMap) {
+            ListaAcomodacoes.hostIdMap = hostIdMap;
         }
 
-        public void addToArrayAOrdenar(Acomodacoes acomodacao) {
-            arrayAOrdenar.add(acomodacao);
-        }
     }
 
     class Leitor {
@@ -356,6 +340,14 @@ public class Merge {
                     Acomodacoes ac = quebrarLinha(data);
 
                     acList.add(ac);
+
+                    if (ListaAcomodacoes.getHostIdMap().containsKey(ac.getHostId())) {
+                        ListaAcomodacoes.getHostIdMap().get(ac.getHostId()).add(ac.getRoomId());
+                    } else {
+                        List<Integer> idArray = new ArrayList<>();
+                        idArray.add(ac.roomId);
+                        ListaAcomodacoes.getHostIdMap().put(ac.hostId, idArray);
+                    }
                 }
 
                 reader.close();
