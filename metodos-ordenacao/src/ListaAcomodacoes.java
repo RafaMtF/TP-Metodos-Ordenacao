@@ -1,12 +1,10 @@
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListaAcomodacoes {
 
     private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
-    private static List<Acomodacoes> arrayAOrdenar = new ArrayList<Acomodacoes>() {
-    };
+   
 
     public static List<Acomodacoes> inserirPorRoomId(int id, List<Acomodacoes> ac) {
         for (Acomodacoes acomodacao : arrayArquivo) {
@@ -49,15 +47,4 @@ public class ListaAcomodacoes {
         ListaAcomodacoes.arrayArquivo = arrayArquivo;
     }
 
-    public static List<Acomodacoes> getArrayAOrdenar() {
-        return arrayAOrdenar;
-    }
-
-    public static void setArrayAOrdenar(List<Acomodacoes> arrayIn) {
-        arrayAOrdenar = arrayIn;
-    }
-
-    public void addToArrayAOrdenar(Acomodacoes acomodacao) {
-        arrayAOrdenar.add(acomodacao);
-    }
 }
