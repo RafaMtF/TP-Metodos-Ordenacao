@@ -4,29 +4,27 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        
+
         Scanner scan = new Scanner(System.in);
 
         String size = scan.nextLine();
 
-        List<Acomodacoes> ac2 = new ArrayList<>();
+        List<Acomodacoes> listResposta = new ArrayList<>();
 
-
-        for(int i = 0; i<Integer.valueOf(size);i++){
+        for (int i = 0; i < Integer.valueOf(size); i++) {
             String s = scan.nextLine();
-            ac2 = ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s), ac2);
+            listResposta = ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s), listResposta);
             if (s.equals("FIM") || s.isEmpty()) {
                 break;
             }
         }
 
         scan.close();
-   
-        ac2 = Ordenador.merge(ac2);
 
-        for (Acomodacoes acomocadao : ac2) {
-                acomocadao.imprimir();
-                //System.out.println(acomocadao.getOverallSatisfaction());
+        listResposta = Ordenador.merge(listResposta);
+
+        for (Acomodacoes acomocadao : listResposta) {
+            acomocadao.imprimir();
         }
     }
 }

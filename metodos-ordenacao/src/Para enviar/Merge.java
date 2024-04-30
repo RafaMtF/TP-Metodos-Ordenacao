@@ -93,10 +93,6 @@ public class Merge {
                     array[k] = a1[i++];
                 }
         }
-
-        private Ordenador() {
-            // O sonarlint insistiu
-        }
     }
 
     public class Acomodacoes {
@@ -265,7 +261,6 @@ public class Merge {
 
     public class ListaAcomodacoes {
 
-        private static Map<Integer, List<Integer>> hostIdMap = new HashMap<>();
         private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
 
         public static List<Acomodacoes> inserirPorRoomId(int id, List<Acomodacoes> ac) {
@@ -276,32 +271,6 @@ public class Merge {
                 }
             }
             return ac;
-        }
-
-        public static Acomodacoes getPorRoomId(int id) {
-            for (Acomodacoes acomodacao : arrayArquivo) {
-                if (acomodacao.getRoomId() == id) {
-                   return acomodacao;
-                }
-            }
-            System.out.println("getporroomId nao encontrou");
-            return null;
-        }
-
-        public static List<Acomodacoes> getArrayArquivo() {
-            return arrayArquivo;
-        }
-
-        public static void setArrayArquivo(List<Acomodacoes> arrayArquivo) {
-            ListaAcomodacoes.arrayArquivo = arrayArquivo;
-        }
-
-        public static Map<Integer, List<Integer>> getHostIdMap() {
-            return hostIdMap;
-        }
-
-        public static void setHostIdMap(Map<Integer, List<Integer>> hostIdMap) {
-            ListaAcomodacoes.hostIdMap = hostIdMap;
         }
 
     }
@@ -325,14 +294,6 @@ public class Merge {
                     Acomodacoes ac = quebrarLinha(data);
 
                     acList.add(ac);
-
-                    if (ListaAcomodacoes.getHostIdMap().containsKey(ac.getHostId())) {
-                        ListaAcomodacoes.getHostIdMap().get(ac.getHostId()).add(ac.getRoomId());
-                    } else {
-                        List<Integer> idArray = new ArrayList<>();
-                        idArray.add(ac.roomId);
-                        ListaAcomodacoes.getHostIdMap().put(ac.hostId, idArray);
-                    }
                 }
 
                 reader.close();
@@ -360,10 +321,6 @@ public class Merge {
             return ac;
         }
 
-        private Leitor() {
-            // O sonarlint insistiu tbm
-        }
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -372,11 +329,11 @@ public class Merge {
 
         String size = scan.nextLine();
 
-        List<Acomodacoes> ac2 = new ArrayList<>();
+        List<Acomodacoes> listResposta = new ArrayList<>();
 
         for (int i = 0; i < Integer.valueOf(size); i++) {
             String s = scan.nextLine();
-            ac2 = ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s), ac2);
+            listResposta = ListaAcomodacoes.inserirPorRoomId(Integer.valueOf(s), listResposta);
             if (s.equals("FIM") || s.isEmpty()) {
                 break;
             }
@@ -384,11 +341,10 @@ public class Merge {
 
         scan.close();
 
-        ac2 = Ordenador.merge(ac2);
+        listResposta = Ordenador.merge(listResposta);
 
-        for (Acomodacoes acomocadao : ac2) {
+        for (Acomodacoes acomocadao : listResposta) {
             acomocadao.imprimir();
-            // System.out.println(acomocadao.getOverallSatisfaction());
         }
     }
 }
