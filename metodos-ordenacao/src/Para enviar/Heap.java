@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Merge {
+public class Heap {
 
     public class Ordenador {
 
@@ -65,7 +65,8 @@ public class Merge {
                 mergesort(acRoomId, 0, acRoomId.length - 1);
 
                 for (int id : acRoomId) {
-                    if (ac.contains(ListaAcomodacoes.getPorRoomId(id))&&!ac2.contains(ListaAcomodacoes.getPorRoomId(id))) {
+                    if (ac.contains(ListaAcomodacoes.getPorRoomId(id))
+                            && !ac2.contains(ListaAcomodacoes.getPorRoomId(id))) {
                         ac2 = ListaAcomodacoes.inserirPorRoomId(id, ac2);
                     }
                 }
@@ -124,6 +125,77 @@ public class Merge {
                     array[k] = a1[i++];
                 }
         }
+
+        public static List<Acomodacoes> heap(List<Acomodacoes> ac) {
+
+            Acomodacoes[] ac2 = ac.toArray(new Acomodacoes[ac.size()]);
+
+            heapsort(ac2);
+
+            return Arrays.asList(ac2);
+
+        }
+
+        static void heapsort(Acomodacoes[] array) {
+            Acomodacoes[] tmp = new Acomodacoes[array.length + 1];
+            for (int i = 0; i < array.length; i++) {
+                tmp[i + 1] = array[i];
+            }
+
+            for (int tamHeap = (tmp.length - 1) / 2; tamHeap >= 1; tamHeap--) {
+                restaura(tmp, tamHeap, tmp.length - 1);
+            }
+
+            int tamHeap = tmp.length - 1;
+            troca(tmp, 1, tamHeap--);
+            while (tamHeap > 1) {
+                restaura(tmp, 1, tamHeap);
+                troca(tmp, 1, tamHeap--);
+            }
+
+            for (int i = 0; i < array.length; i++) {
+                array[i] = tmp[i + 1];
+            }
+        }
+
+        static void restaura(Acomodacoes[] array, int i, int tamHeap) {
+            int maior = i;
+            int filho = getMaiorFilho(array, i, tamHeap);
+        
+            if (array[i].getReviews() < array[filho].getReviews()) {
+                maior = filho;
+            } else if (array[i].getReviews() == array[filho].getReviews()) {
+                if (array[i].getRoomId() < array[filho].getRoomId()) {
+                    maior = filho;
+                }
+            }
+        
+            if (maior != i) {
+                troca(array, i, maior);
+                if (maior <= tamHeap / 2) {
+                    restaura(array, maior, tamHeap);
+                }
+            }
+        }
+        
+
+        static int getMaiorFilho(Acomodacoes[] array, int i, int tamHeap) {
+            int filho;
+            if (2 * i == tamHeap || array[2 * i].getReviews() > array[2 * i + 1].getReviews() || (array[2 * i].getReviews() == array[2 * i + 1].getReviews()&&array[2 * i].getRoomId() > array[2 * i + 1].getRoomId())) {
+                filho = 2 * i;
+            } else {
+                filho = 2 * i + 1;
+            }
+            return filho;
+        }
+
+        static void troca(Acomodacoes[] array, int i, int j) {
+            Acomodacoes temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+
+
 
         private Ordenador() {
             // O sonarlint insistiu
@@ -296,6 +368,7 @@ public class Merge {
 
     public class ListaAcomodacoes {
 
+        private static Map<Integer, List<Integer>> reviewMap = new HashMap<>();
         private static Map<Integer, List<Integer>> hostIdMap = new HashMap<>();
         private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
 
@@ -312,11 +385,26 @@ public class Merge {
         public static Acomodacoes getPorRoomId(int id) {
             for (Acomodacoes acomodacao : arrayArquivo) {
                 if (acomodacao.getRoomId() == id) {
-                   return acomodacao;
+                    return acomodacao;
                 }
             }
-            System.out.println("getporroomId nao encontrou");
+            // System.out.println("getporroomId nao encontrou");
             return null;
+        }
+
+        public static void popularMapa(List<Acomodacoes> acList) {
+            for (Acomodacoes ac : arrayArquivo) {
+
+                if (acList.contains(ac)) {
+                    if (ListaAcomodacoes.getReviewMap().containsKey(ac.getReviews())) {
+                        ListaAcomodacoes.getReviewMap().get(ac.getReviews()).add(ac.getRoomId());
+                    } else {
+                        List<Integer> idArray = new ArrayList<>();
+                        idArray.add(ac.roomId);
+                        ListaAcomodacoes.getReviewMap().put(ac.getReviews(), idArray);
+                    }
+                }
+            }
         }
 
         public static List<Acomodacoes> getArrayArquivo() {
@@ -325,6 +413,14 @@ public class Merge {
 
         public static void setArrayArquivo(List<Acomodacoes> arrayArquivo) {
             ListaAcomodacoes.arrayArquivo = arrayArquivo;
+        }
+
+        public static Map<Integer, List<Integer>> getReviewMap() {
+            return reviewMap;
+        }
+
+        public static void setReviewMap(Map<Integer, List<Integer>> reviewIdMap) {
+            ListaAcomodacoes.reviewMap = reviewIdMap;
         }
 
         public static Map<Integer, List<Integer>> getHostIdMap() {
@@ -357,13 +453,6 @@ public class Merge {
 
                     acList.add(ac);
 
-                    if (ListaAcomodacoes.getHostIdMap().containsKey(ac.getHostId())) {
-                        ListaAcomodacoes.getHostIdMap().get(ac.getHostId()).add(ac.getRoomId());
-                    } else {
-                        List<Integer> idArray = new ArrayList<>();
-                        idArray.add(ac.roomId);
-                        ListaAcomodacoes.getHostIdMap().put(ac.hostId, idArray);
-                    }
                 }
 
                 reader.close();
@@ -379,9 +468,9 @@ public class Merge {
         private static Acomodacoes quebrarLinha(String s) {
             String[] sp = s.split("\\t");
 
-            Merge merge = new Merge();
+            Heap heap = new Heap();
 
-            Acomodacoes ac = merge.new Acomodacoes(Integer.valueOf(sp[0]), Integer.valueOf(sp[1]), sp[2], sp[3], sp[4],
+            Acomodacoes ac = heap.new Acomodacoes(Integer.valueOf(sp[0]), Integer.valueOf(sp[1]), sp[2], sp[3], sp[4],
                     sp[5],
                     Integer.valueOf(sp[6]), Double.valueOf(sp[7]), Integer.valueOf(sp[8]), Double.valueOf(sp[9]),
                     Double.valueOf(sp[10]), sp[11]);
@@ -415,7 +504,9 @@ public class Merge {
 
         scan.close();
 
-        ac2 = Ordenador.merge(ac2);
+        ListaAcomodacoes.popularMapa(ac2);
+
+        ac2 = Ordenador.heap(ac2);
 
         for (Acomodacoes acomocadao : ac2) {
             acomocadao.imprimir();
