@@ -62,9 +62,13 @@ public class Merge {
                     acRoomId = addElement(acRoomId, id);
                 }
 
-                mergesort(acRoomId, 0, acRoomId.length - 1); //Do menor pro maior ou contrario?
-                
-                ac2 = ListaAcomodacoes.inserirPorRoomId(acRoomId[i], ac2);
+                mergesort(acRoomId, 0, acRoomId.length - 1); // Do menor pro maior ou contrario?
+
+                for (int id : acRoomId) {
+                    if (ac.contains(ListaAcomodacoes.getPorRoomId(id))&&!ac2.contains(ListaAcomodacoes.getPorRoomId(id))) {
+                        ac2 = ListaAcomodacoes.inserirPorRoomId(id, ac2);
+                    }
+                }
             }
 
             return ac2;
@@ -292,8 +296,8 @@ public class Merge {
 
     public class ListaAcomodacoes {
 
+        private static Map<Integer, List<Integer>> hostIdMap = new HashMap<>();
         private static List<Acomodacoes> arrayArquivo = Leitor.lerArquivo();
-        private static Map<Integer, List<Integer>> hostIdMap = new HashMap();
 
         public static List<Acomodacoes> inserirPorRoomId(int id, List<Acomodacoes> ac) {
             for (Acomodacoes acomodacao : arrayArquivo) {
@@ -303,6 +307,16 @@ public class Merge {
                 }
             }
             return ac;
+        }
+
+        public static Acomodacoes getPorRoomId(int id) {
+            for (Acomodacoes acomodacao : arrayArquivo) {
+                if (acomodacao.getRoomId() == id) {
+                   return acomodacao;
+                }
+            }
+            System.out.println("getporroomId nao encontrou");
+            return null;
         }
 
         public static List<Acomodacoes> getArrayArquivo() {
@@ -327,6 +341,8 @@ public class Merge {
 
         public static List<Acomodacoes> lerArquivo() {
             File arq = new File("/tmp/dados_airbnb.txt");
+            // "/tmp/dados_airbnb.txt"
+            // "metodos-ordenacao/src/tmp/dados_airbnb.txt"
 
             try {
                 Scanner reader = new Scanner(arq);
