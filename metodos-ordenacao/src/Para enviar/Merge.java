@@ -42,46 +42,15 @@ public class Merge {
 
         public static List<Acomodacoes> merge(List<Acomodacoes> ac) {
 
-            int[] acHostId = {};
+            Acomodacoes[] ac2 = ac.toArray(new Acomodacoes[ac.size()]);
 
-            for (Acomodacoes acomodacao : ac) {
-                acHostId = addElement(acHostId, acomodacao.getHostId());
-            }
+            mergesort(ac2, 0, ac2.length - 1);
 
-            mergesort(acHostId, 0, acHostId.length - 1);
-
-            List<Acomodacoes> ac2 = new ArrayList<>();
-
-            for (int i = 0; i < acHostId.length; i++) {
-
-                List<Integer> roomIds = ListaAcomodacoes.getHostIdMap().get(acHostId[i]);
-
-                int[] acRoomId = {};
-
-                for (int id : roomIds) {
-                    acRoomId = addElement(acRoomId, id);
-                }
-
-                mergesort(acRoomId, 0, acRoomId.length - 1);
-
-                for (int id : acRoomId) {
-                    if (ac.contains(ListaAcomodacoes.getPorRoomId(id))&&!ac2.contains(ListaAcomodacoes.getPorRoomId(id))) {
-                        ac2 = ListaAcomodacoes.inserirPorRoomId(id, ac2);
-                    }
-                }
-            }
-
-            return ac2;
+            return Arrays.asList(ac2);
 
         }
 
-        private static int[] addElement(int[] a, int e) {
-            a = Arrays.copyOf(a, a.length + 1);
-            a[a.length - 1] = e;
-            return a;
-        }
-
-        private static void mergesort(int[] array, int esq, int dir) {
+        private static void mergesort(Acomodacoes[] array, int esq, int dir) {
             if (esq < dir) {
                 int meio = (esq + dir) / 2;
                 mergesort(array, esq, meio);
@@ -90,15 +59,15 @@ public class Merge {
             }
         }
 
-        private static void intercalar(int[] array, int esq, int meio, int dir) {
+        private static void intercalar(Acomodacoes[] array, int esq, int meio, int dir) {
 
             int n1, n2, i, j, k;
 
             n1 = meio - esq + 1;
             n2 = dir - meio;
 
-            int[] a1 = new int[n1];
-            int[] a2 = new int[n2];
+            Acomodacoes[] a1 = new Acomodacoes[n1];
+            Acomodacoes[] a2 = new Acomodacoes[n2];
 
             for (i = 0; i < n1; i++) {
                 a1[i] = array[esq + i];
@@ -109,7 +78,7 @@ public class Merge {
             }
 
             for (i = j = 0, k = esq; (i < n1 && j < n2); k++) {
-                if (a1[i] <= a2[j])
+                if (a1[i].getHostId() < a2[j].getHostId()||(a1[i].getHostId() == a2[j].getHostId()&&a1[i].getRoomId() <= a2[j].getRoomId()))
                     array[k] = a1[i++];
                 else
                     array[k] = a2[j++];
