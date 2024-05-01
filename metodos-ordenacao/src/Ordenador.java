@@ -8,20 +8,23 @@ public class Ordenador {
 
         for (int i = (ac.size() - 1); i > 0; i--) {
 
-            // System.out.println(ac.size()-i+"/"+ac.size());
-
             for (int j = 0; j < i; j++) {
                 if (ac2[j].getOverallSatisfaction() > ac2[j + 1].getOverallSatisfaction()) {
+                    Logger.incrementarComparacoesRealizadas();
 
                     Acomodacoes temp = ac2[j];
                     ac2[j] = ac2[j + 1];
+                    Logger.incrementarMovimentacoesEntreElementos();
                     ac2[j + 1] = temp;
 
                 } else if (ac2[j].getOverallSatisfaction() == ac2[j + 1].getOverallSatisfaction()) {
+                    Logger.incrementarComparacoesRealizadas();
 
                     if (ac2[j].getRoomId() > ac2[j + 1].getRoomId()) {
+                        Logger.incrementarComparacoesRealizadas();
                         Acomodacoes temp = ac2[j];
                         ac2[j] = ac2[j + 1];
+                        Logger.incrementarMovimentacoesEntreElementos();
                         ac2[j + 1] = temp;
                     }
 
@@ -70,19 +73,24 @@ public class Ordenador {
         }
 
         for (i = j = 0, k = esq; (i < n1 && j < n2); k++) {
-            if (a1[i].getHostId() < a2[j].getHostId()||(a1[i].getHostId() == a2[j].getHostId()&&a1[i].getRoomId() <= a2[j].getRoomId()))
+            if (a1[i].getHostId() < a2[j].getHostId()||(a1[i].getHostId() == a2[j].getHostId()&&a1[i].getRoomId() <= a2[j].getRoomId())){
+                Logger.incrementarComparacoesRealizadas();
                 array[k] = a1[i++];
-            else
+                Logger.incrementarMovimentacoesEntreElementos();}
+            else{
                 array[k] = a2[j++];
+                Logger.incrementarMovimentacoesEntreElementos();}
         }
 
         if (i == n1)
             for (; k <= dir; k++) {
                 array[k] = a2[j++];
+                Logger.incrementarMovimentacoesEntreElementos();
             }
         else
             for (; k <= dir; k++) {
                 array[k] = a1[i++];
+                Logger.incrementarMovimentacoesEntreElementos();
             }
     }
 
@@ -124,8 +132,11 @@ public class Ordenador {
     
         if (array[i].getReviews() < array[filho].getReviews()) {
             maior = filho;
+            Logger.incrementarComparacoesRealizadas();
         } else if (array[i].getReviews() == array[filho].getReviews()) {
+            Logger.incrementarComparacoesRealizadas();
             if (array[i].getRoomId() < array[filho].getRoomId()) {
+                Logger.incrementarComparacoesRealizadas();
                 maior = filho;
             }
         }
@@ -138,10 +149,11 @@ public class Ordenador {
         }
     }
     
-
     static int getMaiorFilho(Acomodacoes[] array, int i, int tamHeap) {
         int filho;
         if (2 * i == tamHeap || array[2 * i].getReviews() > array[2 * i + 1].getReviews() || (array[2 * i].getReviews() == array[2 * i + 1].getReviews()&&array[2 * i].getRoomId() > array[2 * i + 1].getRoomId())) {
+            Logger.incrementarComparacoesRealizadas();
+            Logger.incrementarComparacoesRealizadas();
             filho = 2 * i;
         } else {
             filho = 2 * i + 1;
@@ -153,9 +165,6 @@ public class Ordenador {
         Acomodacoes temp = array[i];
         array[i] = array[j];
         array[j] = temp;
+        Logger.incrementarMovimentacoesEntreElementos();
     }
-
-
-
-
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 class Leitor {
 
     public static List<Acomodacoes> lerArquivo() {
-        File arq = new File("/tmp/dados_airbnb.txt");
+        File arq = new File("metodos-ordenacao/src/tmp/dados_airbnb.txt");
         // "/tmp/dados_airbnb.txt"
         // "metodos-ordenacao/src/tmp/dados_airbnb.txt"
 
