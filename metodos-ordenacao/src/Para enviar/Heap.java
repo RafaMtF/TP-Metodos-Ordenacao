@@ -5,8 +5,53 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 
 public class Heap {
+
+    public class Logger {
+    
+        private static String logName = "823413_heapsort.txt";
+        private static String matricula = "823413";
+        private static long tempoDeExecussao;
+        private static int comparacoesRealizadas;
+        private static int movimentacoesEntreElementos;
+        
+        public static void escreverLog(){
+            try{
+            BufferedWriter escritor = new BufferedWriter(new FileWriter(logName));
+    
+            escritor.append(matricula);
+            escritor.append("\t");
+            escritor.append(String.valueOf(tempoDeExecussao));
+            escritor.append("\t");
+            escritor.append(String.valueOf(comparacoesRealizadas));
+            escritor.append("\t");
+            escritor.append(String.valueOf(movimentacoesEntreElementos));
+            
+            escritor.close();
+    
+        }catch(Exception e){
+                System.out.println(e);
+            }
+        }
+    
+        public static void incrementarComparacoesRealizadas(){
+            comparacoesRealizadas++;
+        }
+    
+        public static void incrementarMovimentacoesEntreElementos(){
+            movimentacoesEntreElementos++;
+        }
+    
+        public static void setTempoDeExecussao(long t){
+            tempoDeExecussao = t;
+        }
+    
+    }
+    
 
     public class Ordenador {
 
@@ -488,6 +533,8 @@ public class Heap {
 
     public static void main(String[] args) throws Exception {
 
+        long tempoInicial = System.currentTimeMillis();
+
         Scanner scan = new Scanner(System.in);
 
         String size = scan.nextLine();
@@ -512,5 +559,9 @@ public class Heap {
             acomocadao.imprimir();
             // System.out.println(acomocadao.getOverallSatisfaction());
         }
+
+        Logger.setTempoDeExecussao(System.currentTimeMillis()-tempoInicial);
+
+        Logger.escreverLog();
     }
 }

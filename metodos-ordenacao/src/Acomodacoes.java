@@ -32,7 +32,20 @@ public class Acomodacoes {
     }
 
 
-    // Segundo construtor??
+    public Acomodacoes() {
+        this.roomId = 0;
+        this.hostId = 0;
+        this.reviews = 0;
+        this.accommodates = 0;
+        this.roomType = "roomType";
+        this.country = "country";
+        this.city = "city";
+        this.neighbourhood = "neighbourhood";
+        this.propertyType = "propertyType";
+        this.overallSatisfaction = 0;
+        this.bedrooms = 0;
+        this.price = 0;
+    }
 
     public void ler() {
 
