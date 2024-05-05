@@ -14,6 +14,21 @@ public class Acomodacoes {
     private double bedrooms;
     private double price;
 
+    public Acomodacoes() {
+        this.roomId = 0;
+        this.hostId = 0;
+        this.reviews = 0;
+        this.accommodates = 0;
+        this.roomType = "roomType";
+        this.country = "country";
+        this.city = "city";
+        this.neighbourhood = "neighbourhood";
+        this.propertyType = "propertyType";
+        this.overallSatisfaction = 0;
+        this.bedrooms = 0;
+        this.price = 0;
+    }
+
     public Acomodacoes(int roomId, int hostId, String roomType, String country, String city, String neighbourhood,
             int reviews, double overallSatisfaction, int accommodates,
             double bedrooms, double price, String propertyType) {
@@ -30,9 +45,6 @@ public class Acomodacoes {
         this.bedrooms = bedrooms;
         this.price = price;
     }
-
-
-    // Segundo construtor??
 
     public void ler() {
 
